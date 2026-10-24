@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Print 80mm</title>
+  <style>
+    body {
+      font-family: monospace;
+      width: 76mm;
+      margin: 0;
+      padding: 0;
+    }
+
+    .receipt {
+      width: 76mm;
+      padding: 5px;
+    }
+
+    h3, p {
+      text-align: center;
+      margin: 2px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    th, td {
+      padding: 2px 0;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .line {
+      border-top: 1px dashed #000;
+      margin: 5px 0;
+    }
+
+    /* add bottom border for rows with class dash */
+    tr.dash td {
+      border-bottom: 1px dashed #000;
+      padding-bottom: 4px;
+    }
+
+    @media print {
+      body {
+        width: 76mm;
+      }
+
+      @page {
+        size: 80mm auto;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="receipt">
+    <?php foreach($data['header_po'] as $header){ ?>
+    <h3><?php echo date('d-m-Y', strtotime($header->hd_po_date)); ?></h3>
+    <?php } ?>
+
+    <div class="line"></div>
+    
+    <?php foreach($data['header_po'] as $header){ ?>
+      <p><?php echo $header->hd_po_invoice; ?></p>
+      <p><?php echo $header->warehouse_name; ?></p>
+    <?php } ?>
+
+    <div class="line"></div>
+
+    <?php
+      $grouped = [];
+      foreach($data['detail_po'] as $detail){
+        $key = $detail->dt_product_id;
+        if(!isset($grouped[$key])){
+          $grouped[$key] = [
+            'product_name'     => $detail->product_name,
+            'dt_po_qty'        => $detail->dt_po_qty,
+            'unit_name'        => $detail->unit_name,
+            'product_location' => $detail->product_location,
+            'product_weight'   => $detail->product_weight,
+            'stocks'           => []
+          ];
+        }
+        $grouped[$key]['stocks'][] = [
+          'warehouse_name' => $detail->warehouse_name,
+          'stock'          => $detail->stock
+        ];
+      }
+    ?>
+    <table style="width: 100%;">
+        <tr>
+            <th width="60%">Item</th>
+            <th width="10%">PCS</th>
+            <th width="20%">Satuan</th>
+        </tr>
+     <?php foreach($grouped as $item){ ?>
+      <tr>
+        <td width="60%" style="font-size:11px; padding: 2%;"><?php echo $item['product_name']; ?></td>
+        <td class="text-center" width="10%"><?php echo $item['dt_po_qty']; ?></td>
+        <td class="text-center" width="30%"><?php echo $item['unit_name']; ?></td>
+      </tr>
+      <tr  >
+        <td colspan="3" class="text-left" style="font-size:11px; padding-left: 2%;">
+          <?php foreach($item['stocks'] as $stock){ ?>
+            <?php echo $stock['warehouse_name']; ?>: <?php echo $stock['stock']; ?><br />
+          <?php } ?>
+        </td>
+      </tr>
+      <tr class="dash">
+        <td colspan="3" class="text-left stock-location" style="font-size:11px;">
+          <span style="font-size:11px;">Lokasi Stok: <?php echo $item['product_location']; ?></span>
+          <br />
+          <span style="font-size:11px; font-weight:bold;">BERAT : <?php echo (!empty($item['product_weight']) && $item['product_weight'] != '0') ? $item['product_weight'].' GRAM' : '-'; ?></span>
+          <br /><br /><br />
+        </td>
+      </tr>
+    <?php } ?>
+  </table>
+ 
+</div>
+
+</body>
+</html>
