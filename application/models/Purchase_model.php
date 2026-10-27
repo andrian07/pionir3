@@ -1005,7 +1005,7 @@ class purchase_model extends CI_Model {
 
     public function header_purchase($purchase_id)
     {
-        $query = $this->db->query("select *, a.created_at as tanggal_purchase from hd_purchase a, ms_warehouse b, ms_supplier c, ms_user d, ms_ekspedisi e, ms_payment f where a.hd_purchase_warehouse = b.warehouse_id and a.hd_purchase_supplier = c.supplier_id and a.hd_purchase_payment = f.payment_id and a.created_by = d.user_id and a.hd_purchase_ekspedisi = e.ekspedisi_id and hd_purchase_id  = '".$purchase_id."'");
+        $query = $this->db->query("select *, a.created_at as tanggal_purchase, (select hd_po_invoice from hd_po where hd_po_id = a.hd_po_id) as po_invoice from hd_purchase a, ms_warehouse b, ms_supplier c, ms_user d, ms_ekspedisi e, ms_payment f where a.hd_purchase_warehouse = b.warehouse_id and a.hd_purchase_supplier = c.supplier_id and a.hd_purchase_payment = f.payment_id and a.created_by = d.user_id and a.hd_purchase_ekspedisi = e.ekspedisi_id and hd_purchase_id  = '".$purchase_id."'");
         $result = $query->result();
         return $result;
     }

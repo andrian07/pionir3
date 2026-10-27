@@ -110,7 +110,7 @@ class Purchase extends CI_Controller {
 						$edit = '<button type="button" class="btn btn-icon btn-warning btn-sm mb-2-btn" disabled="disabled" data-bs-toggle="modal" data-bs-target="#exampleModaledit" data-id="'.$field['hd_purchase_id'].'" data-name="'.$field['hd_purchase_invoice'].'"><i class="fas fa-edit sizing-fa"></i></button> ';
 					}
 				}else{
-					$edit = '<button type="button" class="btn btn-icon btn-warning btn-sm mb-2-btn" disabled="disabled"><i class="fas fa-edit sizing-fa"></i></button> <button type="button" class="btn btn-icon btn-info btn-sm mb-2-btn" disabled="disabled"> ';
+					$edit = '<button type="button" class="btn btn-icon btn-warning btn-sm mb-2-btn" disabled="disabled"><i class="fas fa-edit sizing-fa"></i></button> ';
 				}
 
 				if($check_auth['check_access'][0]->delete == 'Y'){
@@ -780,7 +780,7 @@ class Purchase extends CI_Controller {
 						$edit = '<button type="button" class="btn btn-icon btn-warning btn-sm mb-2-btn" data-bs-toggle="modal" data-bs-target="#exampleModaledit" data-id="'.$field['submission_id'].'" data-name="'.$field['submission_invoice'].'" disabled><i class="fas fa-edit sizing-fa"></i></button> ';
 					}
 				}else{
-					$edit = '<button type="button" class="btn btn-icon btn-warning btn-sm mb-2-btn" disabled="disabled"><i class="fas fa-edit sizing-fa"></i></button> <button type="button" class="btn btn-icon btn-info btn-sm mb-2-btn" disabled="disabled"> ';
+					$edit = '<button type="button" class="btn btn-icon btn-warning btn-sm mb-2-btn" disabled="disabled"><i class="fas fa-edit sizing-fa"></i></button> ';
 				}
 
 				if($check_auth['check_access'][0]->delete == 'Y'){
@@ -1076,7 +1076,7 @@ class Purchase extends CI_Controller {
 						$edit = '<button type="button" class="btn btn-icon btn-warning btn-sm mb-2-btn" disabled="disabled" onclick="edit('.$field['hd_po_id'].')"><i class="fas fa-edit sizing-fa"></i></button> ';
 					}
 				}else{
-					$edit = '<button type="button" class="btn btn-icon btn-warning btn-sm mb-2-btn" disabled="disabled" onclick="edit('.$field['hd_po_id'].')"><i class="fas fa-edit sizing-fa"></i></button> <button type="button" class="btn btn-icon btn-info btn-sm mb-2-btn" disabled="disabled"> ';
+					$edit = '<button type="button" class="btn btn-icon btn-warning btn-sm mb-2-btn" disabled="disabled" onclick="edit('.$field['hd_po_id'].')"><i class="fas fa-edit sizing-fa"></i></button> ';
 				}
 
 				if($check_auth['check_access'][0]->delete == 'Y'){
@@ -1087,12 +1087,6 @@ class Purchase extends CI_Controller {
 					}
 				}else{
 					$delete = '<button type="button" class="btn btn-icon btn-danger delete btn-sm mb-2-btn"  disabled="disabled"><i class="fas fa-trash-alt sizing-fa"></i></button> ';
-				}
-
-				if($check_auth['check_access'][0]->view == 'Y'){
-					$note = '<button type="button" class="btn btn-icon btn-warning btn-sm mb-2-btn" onclick="note('.$field['hd_po_id'].')" data-toggle="tooltip" title="Print Memo"><i class="fas fa-sticky-note sizing-fa"></i></button> ';
-				}else{
-					$note = '<button type="button" class="btn btn-icon btn-warning btn-sm mb-2-btn" disabled="disabled" onclick="edit('.$field['hd_po_id'].')"><i class="fas fa-sticky-note sizing-fa"></i></button> <button type="button" class="btn btn-icon btn-info btn-sm mb-2-btn" disabled="disabled"> ';
 				}
 
 				$print = '<button type="button" class="btn btn-icon btn-info delete btn-sm mb-2-btn" data-id="'.$field['hd_po_id'].'" data-bs-toggle="modal" data-bs-target="#print"><i class="fas fa-print sizing-fa"></i></button> ';
@@ -1134,7 +1128,7 @@ class Purchase extends CI_Controller {
 	{
 		$modul = 'PO';
 		$check_auth = $this->check_auth($modul);
-		if($check_auth['check_access'][0]->edit == 'Y'){
+		if($check_auth['check_access'][0]->view == 'Y'){
 			$po_id = $this->input->get('id');
 			$header_po['header_po'] = $this->purchase_model->header_po($po_id);
 			$detail_po['detail_po'] = $this->purchase_model->detail_po($po_id);
@@ -1150,7 +1144,7 @@ class Purchase extends CI_Controller {
 	{
 		$modul = 'PO';
 		$check_auth = $this->check_auth($modul);
-		if($check_auth['check_access'][0]->edit == 'Y'){
+		if($check_auth['check_access'][0]->view == 'Y'){
 			$po_id = $this->input->get('id');
 			$header_po['header_po'] = $this->purchase_model->header_po($po_id);
 			$detail_po['detail_po'] = $this->purchase_model->detail_po($po_id);
@@ -2994,7 +2988,8 @@ class Purchase extends CI_Controller {
 			$warehouse_list['warehouse_list'] = $this->masterdata_model->warehouse_list();
 			$salesman_list['salesman_list'] = $this->masterdata_model->salesman_list();
 			$supplier_list['supplier_list'] = $this->masterdata_model->supplier_list();
-			$data['data'] = array_merge($warehouse_list, $salesman_list, $supplier_list);
+			$check_auth['check_auth'] = $check_auth;
+			$data['data'] = array_merge($warehouse_list, $salesman_list, $supplier_list, $check_auth);
 			$this->load->view('Pages/Purchase/revisipurchase', $data);
 		}else{
 			$msg = "No Access";

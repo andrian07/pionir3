@@ -42,7 +42,7 @@ class Reportstock extends CI_Controller {
 	// Report stok
 	public function stockist()
 	{
-		$modul = 'Report';
+		$modul = 'ReportStock';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
             $category_list['category_list'] = $this->masterdata_model->category_list();
@@ -75,7 +75,7 @@ class Reportstock extends CI_Controller {
 
     public function stockist_excell()
 	{
-		$modul = 'Report';
+		$modul = 'ReportStock';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$warehouse_report  = $this->input->get('warehouse_report');
@@ -134,7 +134,7 @@ class Reportstock extends CI_Controller {
     // Report stok card
     public function stockcard()
 	{
-		$modul = 'Report';
+		$modul = 'ReportStock';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$title['title'] = "Kartu Stok";
@@ -163,7 +163,7 @@ class Reportstock extends CI_Controller {
 
 	public function stockcard_excell()
 	{
-		$modul = 'Report';
+		$modul = 'ReportStock';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$product_id       = $this->input->get('product_id');

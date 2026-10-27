@@ -128,7 +128,7 @@ class Reportpurchase extends CI_Controller {
 	// Report Submission
 	public function reportsubmission()
 	{
-		$modul = 'Report';
+		$modul = 'ReportPurchase';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$warehouse_list['warehouse_list'] = $this->masterdata_model->warehouse_list();
@@ -160,7 +160,7 @@ class Reportpurchase extends CI_Controller {
 	}
 
 	public function reportsubmission_excell(){
-		$modul = 'Report';
+		$modul = 'ReportPurchase';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$start_date       = $this->input->get('start_date');
@@ -214,7 +214,7 @@ class Reportpurchase extends CI_Controller {
 	// Start Report PO
 	public function reportpo()
 	{
-		$modul = 'Report';
+		$modul = 'ReportPurchase';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$warehouse_list['warehouse_list'] = $this->masterdata_model->warehouse_list();
@@ -251,7 +251,7 @@ class Reportpurchase extends CI_Controller {
 	public function reportpo_excell()
 	{
 
-		$modul = 'Report';
+		$modul = 'ReportPurchase';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$start_date       = $this->input->get('start_date');
@@ -348,7 +348,7 @@ class Reportpurchase extends CI_Controller {
 	// Start Report Input Warehouse
 	public function reportinputwarehouse()
 	{
-		$modul = 'Report';
+		$modul = 'ReportPurchase';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$warehouse_list['warehouse_list'] = $this->masterdata_model->warehouse_list();
@@ -382,7 +382,7 @@ class Reportpurchase extends CI_Controller {
 
 	public function reportinputwarehouse_excell()
 	{
-		$modul = 'Report';
+		$modul = 'ReportPurchase';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$start_date       = $this->input->get('start_date');
@@ -439,7 +439,7 @@ class Reportpurchase extends CI_Controller {
 	
 	public function reportpurchases()
 	{
-		$modul = 'Report';
+		$modul = 'ReportPurchase';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$warehouse_list['warehouse_list'] = $this->masterdata_model->warehouse_list();
@@ -472,7 +472,7 @@ class Reportpurchase extends CI_Controller {
 
 	public function reportpurchases_excell()
 	{
-		$modul = 'Report';
+		$modul = 'ReportPurchase';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$start_date       = $this->input->get('start_date');
@@ -558,7 +558,7 @@ class Reportpurchase extends CI_Controller {
 	// start Report Retur Purchase
 	public function reportreturpurchase()
 	{
-		$modul = 'Report';
+		$modul = 'ReportPurchase';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$warehouse_list['warehouse_list'] = $this->masterdata_model->warehouse_list();
@@ -590,7 +590,7 @@ class Reportpurchase extends CI_Controller {
 
 	public function reportreturpurchases_excell()
 	{
-		$modul = 'Report';
+		$modul = 'ReportPurchase';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$start_date       = $this->input->get('start_date');

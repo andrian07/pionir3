@@ -87,10 +87,11 @@
 				$this->masterdata_model->save_role($insert);
 				$role_id = $this->db->insert_id();
 
-				for($i = 1; $i<=28 ; $i++){
+				$all_module_id = $this->db->query("select module_id from ms_module")->result();
+				foreach($all_module_id as $module_row){
 					$data_insert_permision = array(
 						'role_id'	       => $role_id,
-						'module_id'        => $i,
+						'module_id'        => $module_row->module_id,
 						'view'	           => 'N',
 						'add'	           => 'N',
 						'edit'	           => 'N',
@@ -176,6 +177,7 @@
 				$access_supplier   	   		= $this->input->post('access_supplier');
 				$access_item_supplier   	= $this->input->post('access_item_supplier');
 				$access_status   	   		= $this->input->post('access_status');
+				$access_mass_edit   	   	= $this->input->post('access_mass_edit');
 				$user_id   		   			= $_SESSION['user_id'];
 				
 			
@@ -198,7 +200,8 @@
 					'access_stock'	       	=> $access_stock,
 					'access_item_supplier'	=> $access_item_supplier,
 					'access_supplier'	    => $access_supplier,
-					'access_status'	       	=> $access_status
+					'access_status'	       	=> $access_status,
+					'access_mass_edit'	    => $access_mass_edit
 
 				);
 				$this->masterdata_model->update_acc_product($update, $role_id);

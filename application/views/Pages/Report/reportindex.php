@@ -99,6 +99,7 @@ body{background:var(--bg)!important; font-size: 15.5px !important;}
     <div class="rp-grid">
 
       <!-- MASTER DATA -->
+      <?php if($data['check_master'][0]->view == 'Y'){ ?>
       <div class="rp-card rp-amber" id="master-data">
         <i class="fas fa-database rp-deco"></i>
         <div class="rp-card-head">
@@ -120,8 +121,10 @@ body{background:var(--bg)!important; font-size: 15.5px !important;}
         </ul>
         <span class="rp-more">Lihat Laporan <i class="fas fa-arrow-right"></i></span>
       </div>
+      <?php } ?>
 
       <!-- PEMBELIAN -->
+      <?php if($data['check_purchase'][0]->view == 'Y'){ ?>
       <div class="rp-card rp-blue" id="pembelian">
         <i class="fas fa-shopping-cart rp-deco"></i>
         <div class="rp-card-head">
@@ -140,8 +143,10 @@ body{background:var(--bg)!important; font-size: 15.5px !important;}
         </ul>
         <span class="rp-more">Lihat Laporan <i class="fas fa-arrow-right"></i></span>
       </div>
+      <?php } ?>
 
       <!-- PENJUALAN -->
+      <?php if($data['check_sales'][0]->view == 'Y'){ ?>
       <div class="rp-card rp-red" id="penjualan">
         <i class="fas fa-shopping-bag rp-deco"></i>
         <div class="rp-card-head">
@@ -160,8 +165,10 @@ body{background:var(--bg)!important; font-size: 15.5px !important;}
         </ul>
         <span class="rp-more">Lihat Laporan <i class="fas fa-arrow-right"></i></span>
       </div>
+      <?php } ?>
 
       <!-- HUTANG / PIUTANG -->
+      <?php if($data['check_payment'][0]->view == 'Y'){ ?>
       <div class="rp-card rp-green" id="hutang-piutang">
         <i class="fas fa-wallet rp-deco"></i>
         <div class="rp-card-head">
@@ -179,8 +186,10 @@ body{background:var(--bg)!important; font-size: 15.5px !important;}
         </ul>
         <span class="rp-more">Lihat Laporan <i class="fas fa-arrow-right"></i></span>
       </div>
+      <?php } ?>
 
       <!-- PERSEDIAAN -->
+      <?php if($data['check_stock'][0]->view == 'Y'){ ?>
       <div class="rp-card rp-purple">
         <i class="fas fa-boxes rp-deco"></i>
         <div class="rp-card-head">
@@ -196,6 +205,7 @@ body{background:var(--bg)!important; font-size: 15.5px !important;}
         </ul>
         <span class="rp-more">Lihat Laporan <i class="fas fa-arrow-right"></i></span>
       </div>
+      <?php } ?>
 
     </div>
   </div>

@@ -36,8 +36,14 @@ class Report extends CI_Controller {
 		$modul = 'Report';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
+			$user_role_id = $_SESSION['user_role_id'];
 			$title['title'] = "Report";
 			$check_auth['check_auth'] = $check_auth;
+			$check_auth['check_master']   = $this->global_model->check_access($user_role_id, 'ReportMaster');
+			$check_auth['check_purchase'] = $this->global_model->check_access($user_role_id, 'ReportPurchase');
+			$check_auth['check_sales']    = $this->global_model->check_access($user_role_id, 'ReportSales');
+			$check_auth['check_payment']  = $this->global_model->check_access($user_role_id, 'ReportPayment');
+			$check_auth['check_stock']    = $this->global_model->check_access($user_role_id, 'ReportStock');
 			$data['data'] = array_merge($title, $check_auth);
 			$this->load->view('Pages/Report/reportindex', $data);
 		}else{

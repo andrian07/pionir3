@@ -42,7 +42,7 @@ class Reportpayment extends CI_Controller {
 	// Report Hutang Jatuh Tempo
 	public function reportdebtduedate()
 	{
-		$modul = 'Report';
+		$modul = 'ReportPayment';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$warehouse_list['warehouse_list'] = $this->masterdata_model->warehouse_list();
@@ -73,7 +73,7 @@ class Reportpayment extends CI_Controller {
 	}
 
 	public function reportdebtduedate_excell(){
-		$modul = 'Report';
+		$modul = 'ReportPayment';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$start_date       = $this->input->get('start_date');
@@ -143,7 +143,7 @@ class Reportpayment extends CI_Controller {
 	// Report Piutang Jatuh Tempo
 	public function reportrepaymentduedate()
 	{
-		$modul = 'Report';
+		$modul = 'ReportPayment';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$warehouse_list['warehouse_list'] = $this->masterdata_model->warehouse_list();
@@ -174,7 +174,7 @@ class Reportpayment extends CI_Controller {
 	}
 
 	public function reportrepaymentduedate_excell(){
-		$modul = 'Report';
+		$modul = 'ReportPayment';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$start_date       = $this->input->get('start_date');
@@ -244,7 +244,7 @@ class Reportpayment extends CI_Controller {
 
 	public function reportrepayments()
 	{
-		$modul = 'Report';
+		$modul = 'ReportPayment';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$warehouse_list['warehouse_list'] = $this->masterdata_model->warehouse_list();
@@ -274,7 +274,7 @@ class Reportpayment extends CI_Controller {
 	}
 
 	public function reportrepayment_excell(){
-		$modul = 'Report';
+		$modul = 'ReportPayment';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$start_date       = $this->input->get('start_date');
@@ -336,7 +336,7 @@ class Reportpayment extends CI_Controller {
 
 	public function reportpiutang()
 	{
-		$modul = 'Report';
+		$modul = 'ReportPayment';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$warehouse_list['warehouse_list'] = $this->masterdata_model->warehouse_list();
@@ -367,7 +367,7 @@ class Reportpayment extends CI_Controller {
 	}
 
 	public function reportpiutang_excell(){
-		$modul = 'Report';
+		$modul = 'ReportPayment';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$start_date       = $this->input->get('start_date');

@@ -19,7 +19,11 @@ require DOC_ROOT_PATH . $this->config->item('header');
               </div>
               <div class="ms-md-auto py-2 py-md-0">
                 <button class="btn btn-info" id="btnreload"><span class="btn-label"><i class="fas fa-sync"></i></span> Reload</button>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><span class="btn-label"><i class="fa fa-plus"></i></span> Tambah</button>
+                <?php if($data['check_auth']['check_access'][0]->add == 'Y'){ ?>
+                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><span class="btn-label"><i class="fa fa-plus"></i></span> Tambah</button>
+                <?php }else{ ?>
+                  <button class="btn btn-primary" disabled><span class="btn-label"><i class="fa fa-plus"></i></span> Tambah</button>
+                <?php } ?>
 
                 <!-- Tambah Role -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -174,6 +178,15 @@ require DOC_ROOT_PATH . $this->config->item('header');
                                     </label>
                                   </div>
 
+                                  <div class="col-6 col-md-4">
+                                    <label class="summary-option">
+                                      <input class="form-check-input"
+                                            type="checkbox"
+                                            id="access_mass_edit">
+                                      <span>Mass Edit / Import-Export Produk</span>
+                                    </label>
+                                  </div>
+
                                 </div>
                               </td>
                             </tr>
@@ -226,9 +239,18 @@ require DOC_ROOT_PATH . $this->config->item('header');
                       <button type="button" class="btn btn-icon btn-warning btn-sm mb-2-btn" disabled title="Group Super Admin tidak bisa diedit"><i class="far fa-edit sizing-fa"></i></button>
                       <button type="button" class="btn btn-icon btn-primary btn-sm mb-2-btn" disabled title="Group Super Admin tidak bisa diedit"><i class="fas fa-cog sizing-fa"></i></button>
                       <?php }else{ ?>
+                      <?php if($data['check_auth']['check_access'][0]->delete == 'Y'){ ?>
                       <button type="button" class="btn btn-icon btn-danger delete btn-sm mb-2-btn" data-id="<?php echo $row->role_id; ?>" data-name="<?php echo $row->role_name; ?>"><i class="fas fa-trash-alt sizing-fa"></i></button>
+                      <?php }else{ ?>
+                      <button type="button" class="btn btn-icon btn-danger delete btn-sm mb-2-btn" disabled><i class="fas fa-trash-alt sizing-fa"></i></button>
+                      <?php } ?>
+                      <?php if($data['check_auth']['check_access'][0]->edit == 'Y'){ ?>
                       <button type="button" class="btn btn-icon btn-warning btn-sm mb-2-btn" data-id="<?php echo $row->role_id; ?>" data-name="<?php echo $row->role_name; ?>" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="far fa-edit sizing-fa"></i></button>
                       <button type="button" class="btn btn-icon btn-primary btn-sm mb-2-btn" data-id="<?php echo $row->role_id; ?>" data-name="<?php echo $row->role_name; ?>" data-bs-toggle="modal" data-bs-target="#exampleModalsetting"><i class="fas fa-cog sizing-fa"></i></button>
+                      <?php }else{ ?>
+                      <button type="button" class="btn btn-icon btn-warning btn-sm mb-2-btn" disabled><i class="far fa-edit sizing-fa"></i></button>
+                      <button type="button" class="btn btn-icon btn-primary btn-sm mb-2-btn" disabled><i class="fas fa-cog sizing-fa"></i></button>
+                      <?php } ?>
                       <?php } ?>
                     </td>
                   </tr>
@@ -377,6 +399,7 @@ require DOC_ROOT_PATH . $this->config->item('footer');
     let access_supplier = $('#access_supplier').is(':checked') ? 'Y' : 'N';
     let access_item_supplier = $('#access_item_supplier').is(':checked') ? 'Y' : 'N';
     let access_status = $('#access_status').is(':checked') ? 'Y' : 'N';
+    let access_mass_edit = $('#access_mass_edit').is(':checked') ? 'Y' : 'N';
 
     $.ajax({
         type: "POST",
@@ -392,7 +415,8 @@ require DOC_ROOT_PATH . $this->config->item('footer');
             access_stock: access_stock,
             access_supplier: access_supplier,
             access_item_supplier: access_item_supplier,
-            access_status: access_status
+            access_status: access_status,
+            access_mass_edit: access_mass_edit
         },
         success: function(data){
             if (data.code == "200"){
@@ -440,42 +464,46 @@ require DOC_ROOT_PATH . $this->config->item('footer');
       data: {id:id},
       success : function(data){
         let text_temp = "";
+        var view_only_modules = ['Report','ReportMaster','ReportPurchase','ReportSales','ReportPayment','ReportStock','Search'];
         for (let i = 0; i < data.data.get_setting_permission.length; i++) {
-          if(data.data.get_setting_permission[i].view == 'Y'){var view = 'Lihat, ';}else{var view = 'No Access';}
-          if(data.data.get_setting_permission[i].add == 'Y'){var add = 'Tambah, ';}else{var add = '';}
-          if(data.data.get_setting_permission[i].edit == 'Y'){var edit = 'Edit, ';}else{var edit = '';}
-          if(data.data.get_setting_permission[i].delete == 'Y'){var deletes = 'Hapus';}else{var deletes = '';}
-          text_temp += 
+          var is_report_module = view_only_modules.includes(data.data.get_setting_permission[i].module_name);
+          if(data.data.get_setting_permission[i].view == 'Y'){var view = is_report_module ? 'Lihat' : 'Lihat, ';}else{var view = 'No Access';}
+          if(!is_report_module && data.data.get_setting_permission[i].add == 'Y'){var add = 'Tambah, ';}else{var add = '';}
+          if(!is_report_module && data.data.get_setting_permission[i].edit == 'Y'){var edit = 'Edit, ';}else{var edit = '';}
+          if(!is_report_module && data.data.get_setting_permission[i].delete == 'Y'){var deletes = 'Hapus';}else{var deletes = '';}
+          text_temp +=
           '<tr><td>'+data.data.get_setting_permission[i].module_title+'</td><td class="'+data.data.get_setting_permission[i].module_name+'" onclick="tdclick(this)"><a href="#" id="'+data.data.get_setting_permission[i].module_name+'title" class"'+data.data.get_setting_permission[i].module_name+'-title">'+view+''+add+''+edit+''+deletes+'</a><div id="'+data.data.get_setting_permission[i].module_name+'" class="hide-permission">';
           if(data.data.get_setting_permission[i].view == 'Y'){
-            text_temp += 
+            text_temp +=
             '<input class="form-check-input" type="checkbox" name="flexCheckDefaulta'+data.data.get_setting_permission[i].module_name+'" id="flexCheckDefaulta'+data.data.get_setting_permission[i].module_name+'" onclick="editcheck(\''+data.data.get_setting_permission[i].role_permision+'-'+data.data.get_setting_permission[i].module_name+'\')" checked><label class="form-check-label" for="flexCheckDefault">Lihat</label> <br />';
           }else{
-            text_temp += 
+            text_temp +=
             '<input class="form-check-input" type="checkbox" name="flexCheckDefaulta'+data.data.get_setting_permission[i].module_name+'" id="flexCheckDefaulta'+data.data.get_setting_permission[i].module_name+'" onclick="editcheck(\''+data.data.get_setting_permission[i].role_permision+'-'+data.data.get_setting_permission[i].module_name+'\')"><label class="form-check-label" for="flexCheckDefault">Lihat</label> <br />';
           }
 
+          if(!is_report_module){
           if(data.data.get_setting_permission[i].add == 'Y'){
-            text_temp += 
+            text_temp +=
             '<input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultb'+data.data.get_setting_permission[i].module_name+'" onclick="editcheck(\''+data.data.get_setting_permission[i].role_permision+'-'+data.data.get_setting_permission[i].module_name+'\')" checked><label class="form-check-label" for="flexCheckDefault">Tambah</label> <br />';
           }else{
-            text_temp += 
+            text_temp +=
             '<input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultb'+data.data.get_setting_permission[i].module_name+'" onclick="editcheck(\''+data.data.get_setting_permission[i].role_permision+'-'+data.data.get_setting_permission[i].module_name+'\')"><label class="form-check-label" for="flexCheckDefault">Tambah</label> <br />';
           }
 
           if(data.data.get_setting_permission[i].edit == 'Y'){
-            text_temp += 
+            text_temp +=
             '<input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultc'+data.data.get_setting_permission[i].module_name+'" onclick="editcheck(\''+data.data.get_setting_permission[i].role_permision+'-'+data.data.get_setting_permission[i].module_name+'\')" checked><label class="form-check-label" for="flexCheckDefault">Edit</label> <br />';
           }else{
-            text_temp += 
+            text_temp +=
             '<input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultc'+data.data.get_setting_permission[i].module_name+'" onclick="editcheck(\''+data.data.get_setting_permission[i].role_permision+'-'+data.data.get_setting_permission[i].module_name+'\')""><label class="form-check-label" for="flexCheckDefault">Edit</label> <br />';
           }
           if(data.data.get_setting_permission[i].delete == 'Y'){
-            text_temp += 
+            text_temp +=
             '<input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultd'+data.data.get_setting_permission[i].module_name+'" onclick="editcheck(\''+data.data.get_setting_permission[i].role_permision+'-'+data.data.get_setting_permission[i].module_name+'\')" checked><label class="form-check-label" for="flexCheckDefault">Hapus</label> <br />';
           }else{
-            text_temp += 
+            text_temp +=
             '<input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultd'+data.data.get_setting_permission[i].module_name+'" onclick="editcheck(\''+data.data.get_setting_permission[i].role_permision+'-'+data.data.get_setting_permission[i].module_name+'\')"><label class="form-check-label" for="flexCheckDefault">Hapus</label> <br />';
+          }
           }
           text_temp += '</div></td>'+
           '<td><a href="#" class="'+data.data.get_setting_permission[i].module_name+'" id="'+data.data.get_setting_permission[i].module_name+'cancel" onclick="hide(this)" style="display:none;">Tutup</a></td>'+
@@ -538,6 +566,12 @@ require DOC_ROOT_PATH . $this->config->item('footer');
         }else{
           $('#access_status').prop('checked', false);
         }
+
+        if(product_access[0].access_mass_edit == 'Y'){
+          $('#access_mass_edit').prop('checked', true);
+        }else{
+          $('#access_mass_edit').prop('checked', false);
+        }
         $('#role_id_acc').val(id);
       }
     });
@@ -557,10 +591,10 @@ function editcheck(stringname)
   var checkedAdd = document.getElementById(checkboxAdd);
   var checkedEdit = document.getElementById(checkboxEdit);
   var checkedDelete = document.getElementById(checkboxDelete);
-  var value_permission_view = checkedView.checked;
-  var value_permission_add = checkedAdd.checked;
-  var value_permission_edit = checkedEdit.checked;
-  var value_permission_delete = checkedDelete.checked;
+  var value_permission_view = checkedView ? checkedView.checked : false;
+  var value_permission_add = checkedAdd ? checkedAdd.checked : false;
+  var value_permission_edit = checkedEdit ? checkedEdit.checked : false;
+  var value_permission_delete = checkedDelete ? checkedDelete.checked : false;
 
   $.ajax({
     type: "POST",

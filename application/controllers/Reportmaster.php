@@ -64,7 +64,7 @@ class Reportmaster extends CI_Controller {
 
 	// Report Brand
 	public function reportbrand(){
-		$modul = 'Report';
+		$modul = 'ReportMaster';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$excel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
@@ -109,7 +109,7 @@ class Reportmaster extends CI_Controller {
 
 	// Report Customer
 	public function reportcustomer(){
-		$modul = 'Report';
+		$modul = 'ReportMaster';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$excel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
@@ -192,7 +192,7 @@ class Reportmaster extends CI_Controller {
 
 	// Report Exspedisi
 	public function reportekspedisi(){
-		$modul = 'Report';
+		$modul = 'ReportMaster';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$excel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
@@ -242,7 +242,7 @@ class Reportmaster extends CI_Controller {
 
 	// Report warehouse
 	public function reportwarehouse(){
-		$modul = 'Report';
+		$modul = 'ReportMaster';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$excel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
@@ -290,7 +290,7 @@ class Reportmaster extends CI_Controller {
 
 	// Report category
 	public function reportcategory(){
-		$modul = 'Report';
+		$modul = 'ReportMaster';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$excel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
@@ -338,7 +338,7 @@ class Reportmaster extends CI_Controller {
 
 	public function reportproduct()
 	{
-		$modul = 'Report';
+		$modul = 'ReportMaster';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$brand_list['brand_list'] = $this->masterdata_model->brand_list();
@@ -372,7 +372,7 @@ class Reportmaster extends CI_Controller {
 
 	public function reportproduct_excell()
 	{
-		$modul = 'Report';
+		$modul = 'ReportMaster';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$brand_report 	 = $this->input->get('brand_report');
@@ -522,7 +522,7 @@ class Reportmaster extends CI_Controller {
 	// laporan salesman //
 
 	public function reportsalesman(){
-		$modul = 'Report';
+		$modul = 'ReportMaster';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$excel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
@@ -570,7 +570,7 @@ class Reportmaster extends CI_Controller {
 
 	// laporan supplier //
 	public function reportsupplier(){
-		$modul = 'Report';
+		$modul = 'ReportMaster';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$excel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();

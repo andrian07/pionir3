@@ -52,6 +52,7 @@
       </div>
       <div class="col-md-4">
         <p class="detail-invoice"><?php echo $row->hd_purchase_invoice; ?></p>
+        <p>Dari PO: <b><?php echo $row->po_invoice ?? '-'; ?></b></p>
         <p>Supplier: <b><?php echo $row->supplier_name; ?></b></p>
         <p>Golongan: 
           <b>

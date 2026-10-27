@@ -1177,6 +1177,7 @@ class Masterdata extends CI_Controller {
 			$supplier_list['supplier_list'] = $this->masterdata_model->supplier_list();
 			$unit_list['unit_list'] 		= $this->masterdata_model->unit_list();
 			$check_auth['check_auth'] 		= $check_auth;
+			$check_role_product['check_role_product'] = $this->global_model->check_role_product($_SESSION['user_id'])->result_array();
 
 			$product_status_counts = $this->masterdata_model->product_stats();
 			$total_product = 0;
@@ -1196,7 +1197,7 @@ class Masterdata extends CI_Controller {
 				'inactive' => $inactive_product,
 			);
 
-			$data['data'] = array_merge($check_auth, $category_list, $brand_list, $supplier_list, $unit_list, $stats);
+			$data['data'] = array_merge($check_auth, $category_list, $brand_list, $supplier_list, $unit_list, $stats, $check_role_product);
 			$this->load->view('Pages/Masterdata/product', $data);
 		}else{
 			$msg = "No Access";
@@ -1707,7 +1708,8 @@ class Masterdata extends CI_Controller {
 	{
 		$modul = 'Product';
 		$check_auth = $this->check_auth($modul);
-		if($check_auth['check_access'][0]->view == 'Y'){
+		$check_role_product = $this->global_model->check_role_product($_SESSION['user_id'])->result_array();
+		if($check_auth['check_access'][0]->view == 'Y' && $check_role_product[0]['access_mass_edit'] == 'Y'){
 			// kolom A-T diambil dari file sample, kolom stok gudang dibuat sesuai gudang yang aktif
 			$excel = \PhpOffice\PhpSpreadsheet\IOFactory::load(FCPATH.'excell/sample_import_product.xlsx');
 			$sheet = $excel->getActiveSheet();
@@ -1753,7 +1755,8 @@ class Masterdata extends CI_Controller {
 		$modul = 'Product';
 		$check_auth = $this->check_auth($modul);
 		$user_id = $_SESSION['user_id'];
-		if($check_auth['check_access'][0]->add == 'Y'){
+		$check_role_product = $this->global_model->check_role_product($user_id)->result_array();
+		if($check_auth['check_access'][0]->add == 'Y' && $check_role_product[0]['access_mass_edit'] == 'Y'){
 			if(isset($_FILES["file"]["name"])){
 				$path = $_FILES["file"]["tmp_name"];
 				$object = \PhpOffice\PhpSpreadsheet\IOFactory::load($path);
@@ -1849,25 +1852,30 @@ class Masterdata extends CI_Controller {
 							$product_unit_id = $check_product_unit[0]->unit_id;
 						}
 
-						$check_product_supplier = $this->masterdata_model->check_product_supplier($product_supplier);
-						if(!$check_product_supplier){
-								$supplier_code = strtoupper(substr($product_supplier_name, 0, 2));
-								$maxCode = $this->masterdata_model->get_last_supplier();
-								if ($maxCode == NULL) {
-									$last_code_supplier = $supplier_code.'-'.'001';
-								} else {
-									$maxCode = $maxCode[0]->supplier_code;
-									$last_code_supplier = substr($maxCode, -3);
-									$last_code_supplier = $supplier_code.'-'.substr('000' . strval(floatval($last_code_supplier) + 1), -3);
-								}
-								$data_insert_supplier = array(
-									'supplier_code' => $last_code_supplier,
-									'supplier_name' => $product_supplier
-								);
-								$product_supplier_id = $this->masterdata_model->save_supplier($data_insert_supplier);
-						}else{
-							$product_supplier_id = $check_product_supplier[0]->supplier_id;
+						$product_supplier_names = array_filter(array_map('trim', explode(',', $product_supplier)), fn($n) => $n !== '');
+						$product_supplier_ids = array();
+						foreach($product_supplier_names as $one_supplier_name){
+							$check_product_supplier = $this->masterdata_model->check_product_supplier($one_supplier_name);
+							if(!$check_product_supplier){
+									$supplier_code = strtoupper(substr($one_supplier_name, 0, 2));
+									$maxCode = $this->masterdata_model->get_last_supplier();
+									if ($maxCode == NULL) {
+										$last_code_supplier = $supplier_code.'-'.'001';
+									} else {
+										$maxCode = $maxCode[0]->supplier_code;
+										$last_code_supplier = substr($maxCode, -3);
+										$last_code_supplier = $supplier_code.'-'.substr('000' . strval(floatval($last_code_supplier) + 1), -3);
+									}
+									$data_insert_supplier = array(
+										'supplier_code' => $last_code_supplier,
+										'supplier_name' => $one_supplier_name
+									);
+									$product_supplier_ids[] = $this->masterdata_model->save_supplier($data_insert_supplier);
+							}else{
+								$product_supplier_ids[] = $check_product_supplier[0]->supplier_id;
+							}
 						}
+						$product_supplier_id = implode(',', $product_supplier_ids);
 
 						if($product_desc == null){
 							$product_desc = ' - ';
@@ -1912,11 +1920,13 @@ class Masterdata extends CI_Controller {
 							
 						$product_id = $this->masterdata_model->save_product($insert_product);
 
-						$insert_supplier = array(
-						'product_id' => $product_id,
-						'supplier_id' => $product_supplier_id
-						);
-						$this->masterdata_model->save_product_supplier($insert_supplier);
+						foreach($product_supplier_ids as $one_supplier_id){
+							$insert_supplier = array(
+							'product_id' => $product_id,
+							'supplier_id' => $one_supplier_id
+							);
+							$this->masterdata_model->save_product_supplier($insert_supplier);
+						}
 						
 						foreach($stock_columns as $col => $warehouse_id){
 							$stock_awal = (float) $worksheet->getCellByColumnAndRow($col, $row)->getCalculatedValue();
@@ -1958,7 +1968,8 @@ class Masterdata extends CI_Controller {
 	{
 		$modul = 'Product';
 		$check_auth = $this->check_auth($modul);
-		if($check_auth['check_access'][0]->view == 'Y'){
+		$check_role_product = $this->global_model->check_role_product($_SESSION['user_id'])->result_array();
+		if($check_auth['check_access'][0]->view == 'Y' && $check_role_product[0]['access_mass_edit'] == 'Y'){
 			$warehouse_list['warehouse_list'] = $this->masterdata_model->warehouse_list();
 			$history_list['history_list'] = $this->masterdata_model->stock_excel_history_list();
 			$check_auth['check_auth'] = $check_auth;
@@ -2158,7 +2169,8 @@ class Masterdata extends CI_Controller {
 	{
 		$modul = 'Product';
 		$check_auth = $this->check_auth($modul);
-		if($check_auth['check_access'][0]->view == 'Y'){
+		$check_role_product = $this->global_model->check_role_product($_SESSION['user_id'])->result_array();
+		if($check_auth['check_access'][0]->view == 'Y' && $check_role_product[0]['access_mass_edit'] == 'Y'){
 			$user_id = $_SESSION['user_id'];
 			$built = $this->build_stock_workbook();
 
@@ -2199,7 +2211,8 @@ class Masterdata extends CI_Controller {
 		$modul = 'Product';
 		$check_auth = $this->check_auth($modul);
 		$user_id = $_SESSION['user_id'];
-		if($check_auth['check_access'][0]->edit == 'Y'){
+		$check_role_product = $this->global_model->check_role_product($user_id)->result_array();
+		if($check_auth['check_access'][0]->edit == 'Y' && $check_role_product[0]['access_mass_edit'] == 'Y'){
 			if(isset($_FILES["file"]["name"]) && $_FILES["file"]["error"] == 0){
 				$ext = strtolower(pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION));
 				if(!in_array($ext, array('xlsx','xls'))){
@@ -2296,25 +2309,29 @@ class Masterdata extends CI_Controller {
 
 					$v = $cell_value($row, 'supplier_terbaru');
 					if($v !== ''){
-						$check_product_supplier = $this->masterdata_model->check_product_supplier($v);
-						if(!$check_product_supplier){
-							$supplier_code = strtoupper(substr($v, 0, 2));
-							$maxCode = $this->masterdata_model->get_last_supplier();
-							if($maxCode == NULL){
-								$last_code_supplier = $supplier_code.'-'.'001';
+						$mass_edit_supplier_names = array_filter(array_map('trim', explode(',', $v)), fn($n) => $n !== '');
+						$mass_edit_supplier_ids = array();
+						foreach($mass_edit_supplier_names as $one_supplier_name){
+							$check_product_supplier = $this->masterdata_model->check_product_supplier($one_supplier_name);
+							if(!$check_product_supplier){
+								$supplier_code = strtoupper(substr($one_supplier_name, 0, 2));
+								$maxCode = $this->masterdata_model->get_last_supplier();
+								if($maxCode == NULL){
+									$last_code_supplier = $supplier_code.'-'.'001';
+								}else{
+									$maxCode = $maxCode[0]->supplier_code;
+									$last_code_supplier = substr($maxCode, -3);
+									$last_code_supplier = $supplier_code.'-'.substr('000'.strval(floatval($last_code_supplier) + 1), -3);
+								}
+								$mass_edit_supplier_ids[] = $this->masterdata_model->save_supplier(array(
+									'supplier_code' => $last_code_supplier,
+									'supplier_name' => $one_supplier_name
+								));
 							}else{
-								$maxCode = $maxCode[0]->supplier_code;
-								$last_code_supplier = substr($maxCode, -3);
-								$last_code_supplier = $supplier_code.'-'.substr('000'.strval(floatval($last_code_supplier) + 1), -3);
+								$mass_edit_supplier_ids[] = $check_product_supplier[0]->supplier_id;
 							}
-							$product_supplier_id = $this->masterdata_model->save_supplier(array(
-								'supplier_code' => $last_code_supplier,
-								'supplier_name' => $v
-							));
-						}else{
-							$product_supplier_id = $check_product_supplier[0]->supplier_id;
 						}
-						$data_update['product_supplier_id_tag'] = $product_supplier_id;
+						$data_update['product_supplier_id_tag'] = implode(',', $mass_edit_supplier_ids);
 						$data_update['product_supplier_tag'] = strtoupper($v);
 					}
 
@@ -2449,7 +2466,8 @@ class Masterdata extends CI_Controller {
 	{
 		$modul = 'Product';
 		$check_auth = $this->check_auth($modul);
-		if($check_auth['check_access'][0]->view == 'Y'){
+		$check_role_product = $this->global_model->check_role_product($_SESSION['user_id'])->result_array();
+		if($check_auth['check_access'][0]->view == 'Y' && $check_role_product[0]['access_mass_edit'] == 'Y'){
 			$id = $this->input->get('id');
 			$type = $this->input->get('type');
 			$history = $this->masterdata_model->get_stock_excel_history_by_id($id);

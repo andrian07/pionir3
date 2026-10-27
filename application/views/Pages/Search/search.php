@@ -793,7 +793,10 @@ require DOC_ROOT_PATH . $this->config->item('footer');
 
 <script>
 
+ let productAccess = <?php echo json_encode($data['check_role_product'][0] ?? []); ?>;
+
  $(document).ready(function() {
+  apply_product_access_ui();
   product_list_table();
 
   if(window.innerWidth <= 600) {
@@ -811,6 +814,39 @@ require DOC_ROOT_PATH . $this->config->item('footer');
 function toggle_filter_card() {
   $('#filter_body').toggleClass('collapsed');
   $('#filter_toggle_icon').toggleClass('collapsed');
+}
+
+function apply_product_access_ui() {
+  if(!productAccess || Object.keys(productAccess).length === 0) return;
+
+  let price_options = {
+    '1': productAccess.access_umum_price,
+    '2': productAccess.access_store_price,
+    '3': productAccess.access_sales_price,
+    '4': productAccess.access_special_price
+  };
+  $('#summary_field_price option').each(function(){
+    if(price_options[$(this).val()] != 'Y') {
+      $(this).remove();
+    }
+  });
+  if($('#summary_field_price option').length === 0) {
+    $('#summary_field_price').closest('.mb-4').hide();
+  } else if(!$('#summary_field_price option[selected], #summary_field_price option:selected').length) {
+    $('#summary_field_price option:first').prop('selected', true);
+  }
+
+  if(productAccess.access_status != 'Y') {
+    $('#summary_field_status').closest('.summary-option').hide();
+  }
+  if(productAccess.access_stock != 'Y') {
+    $('#summary_field_stock_total').closest('.summary-option').hide();
+    $('#summary_field_stock_per_warehouse').closest('.summary-option').hide();
+    $('#summary_field_lokasi_stock').closest('.summary-option').hide();
+  }
+  if(productAccess.access_supplier != 'Y') {
+    $('#summary_field_supplier').closest('.summary-option').hide();
+  }
 }
 
 
@@ -875,13 +911,14 @@ function product_list_table(key = '') {
       for (let i = 0; i < response.data.length; i++) {
 
         let stocks = response.data[i].total_stock ?? 0;
+        let stocks_display = stocks === '-' ? '-' : stocks;
         let product_id = response.data[i].product_id;
         let checkedAttr = selected_items[product_id] ? 'checked' : '';
         let checkbox_html = select_mode
           ? `<input type="checkbox" class="product-checkbox" data-id="${product_id}" data-name="${response.data[i].product_name}" data-price="${response.data[i].product_sell_price_1}" onchange="toggle_item_selection(this)" ${checkedAttr} style="width:18px;height:18px;accent-color:#2d6a9f;cursor:pointer;">`
           : '';
         let row_click = select_mode ? '' : `onclick="popupOpen(${product_id})"`;
-        let stockClass = stocks <= 0 ? 'low' : '';
+        let stockClass = (stocks !== '-' && stocks <= 0) ? 'low' : '';
 
         let poStatus = parseInt(response.data[i].product_po_status) || 0;
         let rowClass = poStatus > 0 ? 'row-intransit' : '';
@@ -904,11 +941,11 @@ function product_list_table(key = '') {
           </td>
           <td>
             <div class="product-name">${response.data[i].product_name}</div>
-            <span class="product-price-badge">${formatter.format(response.data[i].product_sell_price_1)}</span>
+            <span class="product-price-badge">${response.data[i].product_sell_price_1 === '-' ? '-' : formatter.format(response.data[i].product_sell_price_1)}</span>
           </td>
           <td>
             <div class="product-sku">${response.data[i].product_code ?? '-'}</div>
-            <span class="product-stock ${stockClass}">${stocks} ${response.data[i].unit_name}</span>
+            <span class="product-stock ${stockClass}">${stocks_display} ${stocks === '-' ? '' : response.data[i].unit_name}</span>
             <div class="mt-1">${statusBadge}</div>
           </td>
         </tr>`;

@@ -324,17 +324,19 @@ body{background:var(--bg)!important; font-size: 15.5px !important;}
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
+                        <?php if($data['check_role_product'][0]['access_supplier'] == 'Y'){ ?>
                         <div class="form-group form-inline">
                           <label for="inlineinput" class="col-md-3 col-form-label">Supplier</label>
                           <div class="col-md-12 p-0">
                             <select class="form-control input-full js-example-basic-single" id="filter_supplier" name="filter_supplier">
                               <option value="">ALL</option>
                               <?php foreach ($data['supplier_list'] as $row) { ?>
-                                <option value="<?php echo $row->supplier_name; ?>"><?php echo $row->supplier_name; ?></option>  
+                                <option value="<?php echo $row->supplier_name; ?>"><?php echo $row->supplier_name; ?></option>
                               <?php } ?>
                             </select>
                           </div>
                         </div>
+                        <?php } ?>
 
                         <div class="form-group form-inline">
                           <label for="inlineinput" class="col-md-3 col-form-label">Kategori</label>
@@ -392,6 +394,7 @@ body{background:var(--bg)!important; font-size: 15.5px !important;}
                     </div>
                   </div>
                 </div>
+                <?php if($data['check_role_product'][0]['access_mass_edit'] == 'Y'){ ?>
                 <div class="btn-group dropdown">
                   <button class="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="btn-label"><i class="fas fa-file-excel"></i></span> Excell</button>
                   <ul class="dropdown-menu dropdown-menu-end" role="menu">
@@ -402,6 +405,7 @@ body{background:var(--bg)!important; font-size: 15.5px !important;}
                   </ul>
                 </div>
                 <a href="<?php echo base_url(); ?>Masterdata/stock_mass_update" class="btn btn-outline-dark"><span class="btn-label"><i class="fas fa-file-pen"></i></span> Mass Edit Product</a>
+                <?php } ?>
                 <button class="btn btn-outline-info" id="reload" type="button"><span class="btn-label"><i class="fas fa-sync"></i></span> Reload</button>
                 <?php if($data['check_auth']['check_access'][0]->add == 'N'){ ?>
                   <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".bd-example-modal-xl" disabled="disabled"><span class="btn-label"><i class="fa fa-plus"></i></span> Tambah Produk</button>

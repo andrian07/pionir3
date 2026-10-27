@@ -128,7 +128,7 @@ class Reportsales extends CI_Controller {
 	// Report Sales Order
 	public function reportsalesorder()
 	{
-		$modul = 'Report';
+		$modul = 'ReportSales';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$customer_list['customer_list'] = $this->masterdata_model->customer_list();
@@ -163,7 +163,7 @@ class Reportsales extends CI_Controller {
 
     public function reportsalesorder_excell()
 	{
-		$modul = 'Report';
+		$modul = 'ReportSales';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$start_date       = $this->input->get('start_date');
@@ -254,7 +254,7 @@ class Reportsales extends CI_Controller {
     // Report Sales
     public function reportsaless()
 	{
-		$modul = 'Report';
+		$modul = 'ReportSales';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$customer_list['customer_list'] = $this->masterdata_model->customer_list();
@@ -289,7 +289,7 @@ class Reportsales extends CI_Controller {
 
 	public function reportsaless_excell()
 	{
-		$modul = 'Report';
+		$modul = 'ReportSales';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$start_date       = $this->input->get('start_date');
@@ -378,7 +378,7 @@ class Reportsales extends CI_Controller {
 	// Report Sales Dropship
     public function reportsalessdropship()
 	{
-		$modul = 'Report';
+		$modul = 'ReportSales';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$customer_list['customer_list'] = $this->masterdata_model->customer_list();
@@ -413,7 +413,7 @@ class Reportsales extends CI_Controller {
 
 	public function reportsalessdropship_excell()
 	{
-		$modul = 'Report';
+		$modul = 'ReportSales';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$start_date       = $this->input->get('start_date');
@@ -510,7 +510,7 @@ class Reportsales extends CI_Controller {
 	// Report Revisi Sales
     public function reportrevisisales()
 	{
-		$modul = 'Report';
+		$modul = 'ReportSales';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$customer_list['customer_list'] = $this->masterdata_model->customer_list();
@@ -545,7 +545,7 @@ class Reportsales extends CI_Controller {
 
 	public function reportrevisisales_excell()
 	{
-		$modul = 'Report';
+		$modul = 'ReportSales';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$start_date       = $this->input->get('start_date');
@@ -635,7 +635,7 @@ class Reportsales extends CI_Controller {
 	// Report Revisi Sales
     public function reportretursales()
 	{
-		$modul = 'Report';
+		$modul = 'ReportSales';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$customer_list['customer_list'] = $this->masterdata_model->customer_list();
@@ -668,7 +668,7 @@ class Reportsales extends CI_Controller {
 
 	public function reportretursales_excell()
 	{
-		$modul = 'Report';
+		$modul = 'ReportSales';
 		$check_auth = $this->check_auth($modul);
 		if($check_auth['check_access'][0]->view == 'Y'){
 			$start_date       = $this->input->get('start_date');

@@ -24,7 +24,11 @@ require DOC_ROOT_PATH . $this->config->item('header');
 
                 <button class="btn btn-info" id="reload"><span class="btn-label"><i class="fas fa-sync"></i></span> Reload</button>
 
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".bd-example-modal-lg" data-backdrop="static" data-keyboard="false"><span class="btn-label"><i class="fa fa-plus"></i></span> Tambah</button>
+                <?php if($data['check_auth']['check_access'][0]->add == 'Y'){ ?>
+                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".bd-example-modal-lg" data-backdrop="static" data-keyboard="false"><span class="btn-label"><i class="fa fa-plus"></i></span> Tambah</button>
+                <?php }else{ ?>
+                  <button class="btn btn-primary" disabled><span class="btn-label"><i class="fa fa-plus"></i></span> Tambah</button>
+                <?php } ?>
 
                 <div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" >
                   <div class="modal-dialog modal-lg">

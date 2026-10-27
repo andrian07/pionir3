@@ -110,6 +110,8 @@
     <?php foreach ($data['get_product_by_id'] as $row): ?>
 
     <?php
+      $access = $data['check_role_product'][0] ?? [];
+
       $status_class = 'status-active';
       if ($row->product_status == 'Tidak Aktif') { $status_class = 'status-inactive'; }
       else if ($row->product_status == 'Discontinue') { $status_class = 'status-discontinue'; }
@@ -146,7 +148,9 @@
       <div class="pd-side">
         <div class="pd-photo-card">
           <div class="pd-photo-wrap">
+            <?php if(($access['access_status'] ?? 'N') == 'Y'){ ?>
             <span class="pd-status-badge status-pill <?php echo $status_class; ?>" style="background:#fff;border-radius:20px;padding:.25rem .7rem;box-shadow:var(--card-sh);"><span class="status-dot"></span> <?php echo htmlspecialchars($row->product_status); ?></span>
+            <?php } ?>
             <img src="<?php echo base_url(); ?>assets/products/<?php echo htmlspecialchars($row->product_image); ?>" alt="<?php echo htmlspecialchars($row->product_name); ?>" onerror="this.onerror=null;this.src='<?php echo base_url(); ?>assets/products/default.png';">
           </div>
 
@@ -175,7 +179,11 @@
           <div class="pd-stock-card">
             <div class="si"><i class="fas fa-warehouse"></i></div>
             <div style="flex:1;">
+              <?php if(($access['access_stock'] ?? 'N') == 'Y'){ ?>
               <div class="sv"><?php echo number_format($total_stock); ?> <?php echo htmlspecialchars($stock_unit); ?></div>
+              <?php }else{ ?>
+              <div class="sv">-</div>
+              <?php } ?>
               <div class="sl">Stok Tersedia</div>
             </div>
             <a href="#stockTable">Lihat Stock <i class="fas fa-chevron-right"></i></a>
@@ -200,19 +208,23 @@
               <div class="pd-info-row">
                 <span class="ik">Supplier</span>
                 <span class="iv">
-                  <?php foreach (explode(',', $row->product_supplier_tag) as $tag): ?>
-                    <?php if (trim($tag) !== ''): ?><span class="exp-badge"><?php echo htmlspecialchars(trim($tag)); ?></span><?php endif; ?>
-                  <?php endforeach; ?>
+                  <?php if(($access['access_supplier'] ?? 'N') == 'Y'){ ?>
+                    <?php foreach (explode(',', $row->product_supplier_tag) as $tag): ?>
+                      <?php if (trim($tag) !== ''): ?><span class="exp-badge"><?php echo htmlspecialchars(trim($tag)); ?></span><?php endif; ?>
+                    <?php endforeach; ?>
+                  <?php }else{ ?>
+                    -
+                  <?php } ?>
                 </span>
               </div>
-              <div class="pd-info-row"><span class="ik">Item Supplier</span><span class="iv"><?php echo nl2br(htmlspecialchars($row->product_supplier_name)); ?></span></div>
+              <div class="pd-info-row"><span class="ik">Item Supplier</span><span class="iv"><?php echo ($access['access_item_supplier'] ?? 'N') == 'Y' ? nl2br(htmlspecialchars($row->product_supplier_name)) : '-'; ?></span></div>
             </div>
             <div>
               <div class="pd-info-row"><span class="ik">Satuan Dasar</span><span class="iv"><?php echo htmlspecialchars($row->unit_name); ?></span></div>
               <div class="pd-info-row"><span class="ik">Min Stok</span><span class="iv"><?php echo number_format($row->product_min_stock); ?></span></div>
               <div class="pd-info-row"><span class="ik">Min Order</span><span class="iv"><?php echo htmlspecialchars($row->product_min_order); ?></span></div>
               <div class="pd-info-row"><span class="ik">Berat (Gram)</span><span class="iv"><?php echo number_format($row->product_weight); ?></span></div>
-              <div class="pd-info-row"><span class="ik">Status</span><span class="iv"><span class="status-pill <?php echo $status_class; ?>"><span class="status-dot"></span> <?php echo htmlspecialchars($row->product_status); ?></span></span></div>
+              <div class="pd-info-row"><span class="ik">Status</span><span class="iv"><?php if(($access['access_status'] ?? 'N') == 'Y'){ ?><span class="status-pill <?php echo $status_class; ?>"><span class="status-dot"></span> <?php echo htmlspecialchars($row->product_status); ?></span><?php }else{ ?>-<?php } ?></span></div>
               <div class="pd-info-row">
                 <span class="ik">Paket</span>
                 <span class="iv"><?php if ($row->is_package == 'Y'): ?><span class="yn-pill yn-yes"><i class="fas fa-check-circle"></i> Termasuk paket</span><?php else: ?><span class="yn-pill yn-no"><i class="fas fa-times-circle"></i> Tidak termasuk paket</span><?php endif; ?></span>
@@ -221,8 +233,8 @@
                 <span class="ik">PPN</span>
                 <span class="iv"><?php if ($row->is_ppn == 'PPN'): ?><span class="yn-pill yn-yes"><i class="fas fa-check-circle"></i> PPN</span><?php else: ?><span class="yn-pill yn-no"><i class="fas fa-times-circle"></i> Non PPN</span><?php endif; ?></span>
               </div>
-              <div class="pd-info-row"><span class="ik">HPP</span><span class="iv"><span class="pd-badge-amber">Rp <?php echo number_format($row->product_hpp); ?></span></span></div>
-              <div class="pd-info-row"><span class="ik">Harga Beli</span><span class="iv"><span class="pd-badge-amber">Rp <?php echo number_format($row->product_price); ?></span></span></div>
+              <div class="pd-info-row"><span class="ik">HPP</span><span class="iv"><?php if(($access['access_purchase_price'] ?? 'N') == 'Y'){ ?><span class="pd-badge-amber">Rp <?php echo number_format($row->product_hpp); ?></span><?php }else{ ?>-<?php } ?></span></div>
+              <div class="pd-info-row"><span class="ik">Harga Beli</span><span class="iv"><?php if(($access['access_purchase_price'] ?? 'N') == 'Y'){ ?><span class="pd-badge-amber">Rp <?php echo number_format($row->product_price); ?></span><?php }else{ ?>-<?php } ?></span></div>
               <div class="pd-info-row"><span class="ik">Lokasi</span><span class="iv"><?php echo htmlspecialchars($row->product_location); ?></span></div>
             </div>
             <div class="pd-info-row" style="grid-column:1 / -1;"><span class="ik">Deskripsi</span><span class="iv" style="text-align:left;flex:1;margin-left:2rem;"><?php echo nl2br(htmlspecialchars($row->product_desc)); ?></span></div>
@@ -291,21 +303,28 @@
               <tbody>
                 <?php
                   $tiers = array(
-                    array('Umum', $row->product_sell_percentage_1, $row->product_sell_price_1),
-                    array('Toko', $row->product_sell_percentage_2, $row->product_sell_price_2),
-                    array('Sales', $row->product_sell_percentage_3, $row->product_sell_price_3),
-                    array('Khusus', $row->product_sell_percentage_4, $row->product_sell_price_4),
+                    array('Umum', $row->product_sell_percentage_1, $row->product_sell_price_1, $access['access_umum_price'] ?? 'N'),
+                    array('Toko', $row->product_sell_percentage_2, $row->product_sell_price_2, $access['access_store_price'] ?? 'N'),
+                    array('Sales', $row->product_sell_percentage_3, $row->product_sell_price_3, $access['access_sales_price'] ?? 'N'),
+                    array('Khusus', $row->product_sell_percentage_4, $row->product_sell_price_4, $access['access_special_price'] ?? 'N'),
                   );
                   foreach ($tiers as $tier):
-                    list($label, $margin, $price) = $tier;
+                    list($label, $margin, $price, $tier_access) = $tier;
                     $disc_price = $price - ($price * $row->product_disc_percentage / 100);
                 ?>
                 <tr>
                   <td><strong><?php echo $label; ?></strong></td>
+                  <?php if($tier_access == 'Y'){ ?>
                   <td><?php echo (int) $margin; ?>%</td>
                   <td><span class="pd-badge-blue">Rp <?php echo number_format($price); ?></span></td>
                   <td><?php echo (int) $row->product_disc_percentage; ?>%</td>
                   <td><span class="pd-badge-amber">Rp <?php echo number_format($disc_price); ?></span></td>
+                  <?php }else{ ?>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <?php } ?>
                 </tr>
                 <?php endforeach; ?>
               </tbody>
@@ -322,15 +341,18 @@
             <table class="pd-table">
               <thead><tr><th>Cabang / Gudang</th><th>Qty</th></tr></thead>
               <tbody>
-                <?php if (empty($data['product_stock'])): ?>
+                <?php if(($access['access_stock'] ?? 'N') != 'Y'): ?>
+                <tr><td colspan="2" style="color:var(--slate);">Tidak ada akses melihat stok.</td></tr>
+                <?php elseif (empty($data['product_stock'])): ?>
                 <tr><td colspan="2" style="color:var(--slate);">Belum ada data stok.</td></tr>
-                <?php endif; ?>
+                <?php else: ?>
                 <?php foreach ($data['product_stock'] as $s): ?>
                 <tr>
                   <td><?php echo htmlspecialchars($s->warehouse_name); ?></td>
                   <td><strong><?php echo number_format($s->stock); ?></strong> <?php echo htmlspecialchars($s->unit_name); ?></td>
                 </tr>
                 <?php endforeach; ?>
+                <?php endif; ?>
               </tbody>
             </table>
           </div>
