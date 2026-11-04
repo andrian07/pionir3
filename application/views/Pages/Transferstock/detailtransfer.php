@@ -46,12 +46,13 @@
   <?php foreach($data['header_transfer'] as $row){ ?>
     <div class="row header-details">
       <div class="col-md-4">
-        <p class="detail-company"><b><?php echo company ?> </b></p>
+        <p class="detail-company"><b><?php echo $row->warehouse_name ?? company; ?> </b></p>
         <p><?php echo company_address ?></p>
         <p><?php echo company_phone ?></p>
       </div>
       <div class="col-md-4">
         <p class="detail-invoice"><?php echo $row->hd_transfer_stock_code; ?></p>
+        <p>Inisial: <b><?php echo $row->hd_transfer_stock_initial; ?></b></p>
       </div>
       <div class="col-md-4">
         <p>Status: 

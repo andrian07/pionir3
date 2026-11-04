@@ -569,7 +569,7 @@ class Purchase extends CI_Controller {
 				$save_note_product = $this->purchase_model->save_note_product($data_insert_note);
 				$get_last_note_product = $this->purchase_model->get_last_note_product($product_id_note)->result_array();
 				$last_note = $get_last_note_product[0]['product_note'];
-				$new_note = $last_note.'<br />'.$product_desc;
+				$new_note = $last_note.'<br /><br />'.$product_desc;
 				$update_note_product = $this->purchase_model->update_note_product($product_id_note, $new_note);
 
 				$product_last_stock = $this->purchase_model->get_product_stock($row['temp_product_id'])->result_array();

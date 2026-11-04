@@ -1242,7 +1242,7 @@ class purchase_model extends CI_Model {
 
     public function header_retur_purchase($retur_purchase_id)
     {
-        $query = $this->db->query("select * from hd_retur_purchase a, ms_supplier c, ms_user d where a.hd_retur_purchase_supplier_id = c.supplier_id and a.created_by = d.user_id and hd_retur_purchase_id  = '".$retur_purchase_id."'");
+        $query = $this->db->query("select *, (select w.warehouse_name from dt_retur_purchase dtp join ms_warehouse w on dtp.dt_retur_warehouse_id = w.warehouse_id where dtp.hd_retur_purchase_id = a.hd_retur_purchase_id limit 1) as warehouse_name from hd_retur_purchase a, ms_supplier c, ms_user d where a.hd_retur_purchase_supplier_id = c.supplier_id and a.created_by = d.user_id and hd_retur_purchase_id  = '".$retur_purchase_id."'");
         $result = $query->result();
         return $result;
     }

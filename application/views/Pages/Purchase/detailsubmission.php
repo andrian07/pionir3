@@ -37,7 +37,7 @@
 
   <div class="row title-detail-middle">
     <div class="col-md-4">
-      <p class="detail-company"><b><?php echo company ?> </b><br /> <?php echo company_address ?> <br /> <?php echo company_phone ?></p>
+      <p class="detail-company"><b><?php echo $submission_by_id[0]['warehouse_name']; ?> </b><br /> <?php echo company_address ?> <br /> <?php echo company_phone ?></p>
     </div>
     <div class="col-md-4" class="col-detail-inv">
 

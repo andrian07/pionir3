@@ -14,7 +14,7 @@
 		}
 
 		.container{
-			width:1000px;
+			width:1100px;
 			margin:auto;
 		}
 
@@ -29,7 +29,7 @@
 
 		.box{
 			border:1px solid #000;
-			padding:5px;
+			padding:2px;
 		}
 
 		.table-item{
@@ -73,6 +73,9 @@
 		.page-break{
 			page-break-after:always;
 		}
+		.sign{
+		    margin-top:-5px;
+		}
 
 	</style>
 </head>
@@ -100,10 +103,10 @@
 				<tr>
 					<td width="60%">
 						<table class="address">
-                            
+
 							<?php foreach($data['header_sales_dropship'] as $header){ ?>
 							<tr>
-								<td colspan="2"><b style="font-size:22px;"><?php echo $header->customer_name; ?></b></td>
+								<td colspan="2"><b><?php echo $header->customer_name; ?></b></td>
 							</tr>
 
 							<tr>
@@ -118,7 +121,7 @@
 								<td width="60%">PONTIANAK</td>
 								<td><b style="font-size:18px;">Faktur Penjualan</b></td>
 							</tr>
-                            <?php } ?>
+							<?php } ?>
 
 						</table>
 					</td>
@@ -139,9 +142,9 @@
 
 							<b><?php echo $header->hd_dropship_sales_dropship_name; ?> - <?php echo $header->hd_dropship_sales_dropship_phone; ?></b>
 
-							<br><br>
+							<br>
 
-							<?php echo $header->hd_dropship_sales_dropship_address; ?>
+							<span style="font-size:18px;"><?php echo $header->hd_dropship_sales_dropship_address; ?></span>
 
 							<?php } ?>
 
@@ -149,6 +152,18 @@
 
 					</td>
 				</tr>
+
+				<tr>
+					<td width="60%">No Faktur : <?php echo $header->hd_dropship_sales_inv; ?></td>
+					<td width="40%" style="text-align:left;">
+						Metode Pembayaran: <b><?php echo $header->payment_name; ?></b>
+
+						<span style="margin-left:40px;">
+							T.O.P : <b><?php echo $header->hd_dropship_sales_top; ?></b>
+						</span>
+					</td>
+				</tr>
+
 			</table>
 
 
@@ -159,11 +174,11 @@
 				<thead>
 
 					<tr>
-						<th width="5%">NO</th>
+						<th width="4%">NO</th>
 						<th width="8%">QTY</th>
-						<th width="15%">SKU</th>
+						<th width="10%">SKU</th>
 						<th>BARANG</th>
-						<th width="15%">HARGA</th>
+						<th width="12%">HARGA</th>
 						<th width="15%">JUMLAH</th>
 					</tr>
 
@@ -240,13 +255,13 @@
 
 							<td width="30%" class="text-center">
 								PENERIMA
-								<br><br><br><br><br>
+								<br><br><br><br>
 								(.................)
 							</td>
 
 							<td width="30%" class="text-center">
 								HORMAT KAMI
-								<br><br><br><br><br>
+								<br><br><br><br>
 								(.................)
 							</td>
 
