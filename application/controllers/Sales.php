@@ -154,7 +154,7 @@ class Sales extends CI_Controller {
 
 				$disable = ($check_auth['check_access'][0]->edit != 'Y' || in_array($field['hd_sales_order_status'], ['Cancel', 'Success']));
 
-				$print = '<button type="button" class="btn btn-icon btn-warning delete btn-sm mb-2-btn" data-id="'.$field['hd_sales_order_id'].'" data-bs-toggle="modal" data-bs-target="#print"><i class="fas fa-print sizing-fa"></i></button> ';
+				$print = '<button type="button" class="btn btn-icon btn-secondary delete btn-sm mb-2-btn" data-id="'.$field['hd_sales_order_id'].'" data-bs-toggle="modal" data-bs-target="#print"><i class="fas fa-print sizing-fa"></i></button> ';
 
 				if($disable){
 					$edit = '<a>
@@ -904,7 +904,7 @@ class Sales extends CI_Controller {
 					$delete = '<button type="button" class="btn btn-icon btn-danger delete btn-sm mb-2-btn"  disabled="disabled"><i class="fas fa-trash-alt sizing-fa"></i></button> ';
 				}
 
-				$print = '<button type="button" class="btn btn-icon btn-warning delete btn-sm mb-2-btn" data-id="'.$field['hd_sales_id'].'" data-bs-toggle="modal" data-bs-target="#print"><i class="fas fa-print sizing-fa"></i></button> ';
+				$print = '<button type="button" class="btn btn-icon btn-secondary delete btn-sm mb-2-btn" data-id="'.$field['hd_sales_id'].'" data-bs-toggle="modal" data-bs-target="#print"><i class="fas fa-print sizing-fa"></i></button> ';
 
 				$date = date_create($field['hd_sales_date']); 
 				$no++;
@@ -2508,7 +2508,7 @@ class Sales extends CI_Controller {
 					$edit = '<button type="button" class="btn btn-icon btn-warning edit btn-sm mb-2-btn"  disabled="disabled"><i class="fas fa-edit sizing-fa"></i></button> ';
 				}
 
-				$print = '<button type="button" class="btn btn-icon btn-info delete btn-sm mb-2-btn" data-id="'.$field['hd_dropship_sales_id'].'" data-bs-toggle="modal" data-bs-target="#print"><i class="fas fa-print sizing-fa"></i></button> ';
+				$print = '<button type="button" class="btn btn-icon btn-secondary delete btn-sm mb-2-btn" data-id="'.$field['hd_dropship_sales_id'].'" data-bs-toggle="modal" data-bs-target="#print"><i class="fas fa-print sizing-fa"></i></button> ';
 
 				$date = date_create($field['hd_dropship_sales_date']); 
 				$no++;

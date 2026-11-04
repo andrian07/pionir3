@@ -1089,7 +1089,7 @@ class Purchase extends CI_Controller {
 					$delete = '<button type="button" class="btn btn-icon btn-danger delete btn-sm mb-2-btn"  disabled="disabled"><i class="fas fa-trash-alt sizing-fa"></i></button> ';
 				}
 
-				$print = '<button type="button" class="btn btn-icon btn-info delete btn-sm mb-2-btn" data-id="'.$field['hd_po_id'].'" data-bs-toggle="modal" data-bs-target="#print"><i class="fas fa-print sizing-fa"></i></button> ';
+				$print = '<button type="button" class="btn btn-icon btn-secondary delete btn-sm mb-2-btn" data-id="'.$field['hd_po_id'].'" data-bs-toggle="modal" data-bs-target="#print"><i class="fas fa-print sizing-fa"></i></button> ';
 
 				$date = date_create($field['hd_po_date']); 
 
@@ -1986,7 +1986,9 @@ class Purchase extends CI_Controller {
 					$delete = '<button type="button" class="btn btn-icon btn-danger delete btn-sm mb-2-btn"  disabled="disabled"><i class="fas fa-trash-alt sizing-fa"></i></button> ';
 				}
 
-				$date = date_create($field['hd_input_stock_date']); 
+				$print = '<button type="button" class="btn btn-icon btn-secondary delete btn-sm mb-2-btn" data-id="'.$field['hd_input_stock_id'].'" data-bs-toggle="modal" data-bs-target="#print"><i class="fas fa-print sizing-fa"></i></button> ';
+
+				$date = date_create($field['hd_input_stock_date']);
 
 				$no++;
 				$row = array();
@@ -1998,7 +2000,7 @@ class Purchase extends CI_Controller {
 				$row[] 	= $field['dt_is_qty'];
 				$row[] 	= $field['dt_is_note'];
 				$row[] 	= $hd_input_stock_status;
-				$row[] 	= $detail.$delete;
+				$row[] 	= $detail.$delete.$print;
 				$data[] = $row;
 			}
 
@@ -2143,7 +2145,7 @@ class Purchase extends CI_Controller {
 					'temp_is_po_code'			=> $row->hd_po_invoice,
 					'temp_is_warehouse'			=> $row->hd_po_warehouse,
 					'temp_is_ekspedisi'			=> $row->hd_po_ekspedisi,
-					'temp_is_note'				=> $row->dt_po_note,
+					'temp_is_note'				=> '',
 					'temp_is_user_id'			=> $user_id,
 				);	
 
@@ -2339,6 +2341,38 @@ class Purchase extends CI_Controller {
 			$data['data'] = array_merge($header_input_stock, $detail_input_stock);
 			$this->load->view('Pages/Purchase/detailinputstock', $data);
 			//echo json_encode($output);
+		}else{
+			$msg = "No Access";
+			echo json_encode(['code'=>0, 'result'=>$msg]);die();
+		}
+	}
+
+	public function printinputstockbongkar()
+	{
+		$modul = 'WarehouseInput';
+		$check_auth = $this->check_auth($modul);
+		if($check_auth['check_access'][0]->view == 'Y'){
+			$input_stock_id = $this->input->get('id');
+			$header_input_stock['header_input_stock'] = $this->purchase_model->header_input_stock($input_stock_id);
+			$detail_input_stock['detail_input_stock'] = $this->purchase_model->detail_input_stock($input_stock_id);
+			$data['data'] = array_merge($header_input_stock, $detail_input_stock);
+			$this->load->view('Pages/Purchase/printinputstockbongkar', $data);
+		}else{
+			$msg = "No Access";
+			echo json_encode(['code'=>0, 'result'=>$msg]);die();
+		}
+	}
+
+	public function printinputstockstok()
+	{
+		$modul = 'WarehouseInput';
+		$check_auth = $this->check_auth($modul);
+		if($check_auth['check_access'][0]->view == 'Y'){
+			$input_stock_id = $this->input->get('id');
+			$header_input_stock['header_input_stock'] = $this->purchase_model->header_input_stock($input_stock_id);
+			$detail_input_stock['detail_input_stock'] = $this->purchase_model->detail_input_stock_stock($input_stock_id);
+			$data['data'] = array_merge($header_input_stock, $detail_input_stock);
+			$this->load->view('Pages/Purchase/printinputstockstok', $data);
 		}else{
 			$msg = "No Access";
 			echo json_encode(['code'=>0, 'result'=>$msg]);die();

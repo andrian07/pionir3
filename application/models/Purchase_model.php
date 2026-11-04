@@ -676,6 +676,13 @@ class purchase_model extends CI_Model {
         return $result;
     }
 
+    public function detail_input_stock_stock($input_stock_id)
+    {
+        $query = $this->db->query("select * from dt_input_stock a, hd_input_stock b, ms_product c, ms_unit d, ms_product_stock e, ms_warehouse f where a.hd_is_id = b.hd_input_stock_id and a.dt_is_product_id = c.product_id and c.product_unit = d.unit_id and a.dt_is_product_id = e.product_id and e.warehouse_id = f.warehouse_id and hd_is_id = '".$input_stock_id."'");
+        $result = $query->result();
+        return $result;
+    }
+
     public function delete_warehouse_input($input_stock_id)
     {
         $this->db->set('hd_input_stock_status', 'Cancel');

@@ -83,6 +83,35 @@ require DOC_ROOT_PATH . $this->config->item('header');
                     </div>
                   </div>
                 </div>
+
+                <div class="modal fade" id="print" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">PRINT</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+
+                        <label for="inlineinput" class="col-md-8 col-form-label">Jenis Print: </label>
+                        <div class="col-md-12 p-0">
+                          <select class="form-control input-full" id="print_type" name="print_type">
+                            <option value="">-- Pilih Jenis Print --</option>
+                            <option value="1">Print 80mm (Inputan Bongkar)</option>
+                            <option value="2">Print 80mm (Detail/Stok Polos)</option>
+                          </select>
+
+                          <input type="hidden" id="input_stock_id" name="input_stock_id" value="">
+                        </div>
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fas fa-times-circle"></i> Batal</button>
+                        <button type="button" id="btnprint" class="btn btn-primary"><i class="fas fa-search"></i> Print</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -211,5 +240,32 @@ require DOC_ROOT_PATH . $this->config->item('footer');
       var modal = bootstrap.Modal.getInstance(document.getElementById('myModalsearch'));
       $('#exampleModaledit').modal('hide');
   });
-    
+
+  $('#btnprint').on('click', function () {
+    var print_type = $('#print_type').val();
+    if(print_type != '') {
+      let input_stock_id = $('#input_stock_id').val();
+      let url = '';
+      if(print_type == '1') {
+        url = '<?php echo base_url(); ?>Purchase/printinputstockbongkar?id='+input_stock_id;
+      }else{
+        url = '<?php echo base_url(); ?>Purchase/printinputstockstok?id='+input_stock_id;
+      }
+      window.open(url, '_blank');
+    }else{
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Pilih jenis print terlebih dahulu',
+      })
+    }
+  });
+
+  $('#print').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var id   = button.data('id')
+    var modal = $(this)
+    modal.find('#input_stock_id').val(id)
+  })
+
 </script>
