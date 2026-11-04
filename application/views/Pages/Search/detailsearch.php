@@ -78,6 +78,7 @@
     .pd-info-row .iv{color:var(--dark);font-weight:700;text-align:right;}
 
     .exp-badge{display:inline-block;background:var(--blue);color:#fff;border-radius:20px;padding:.18rem .6rem;font-size:.74rem;font-weight:700;margin:0 0 .25rem .25rem;}
+  .exp-badge.last-supplier{background:#f59e0b;color:#fff;box-shadow:0 0 0 2px rgba(245,158,11,.3);}
     .status-pill{display:inline-flex;align-items:center;font-weight:700;font-size:.85rem;}
     .status-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:.4rem;}
     .status-active{color:var(--green);} .status-active .status-dot{background:var(--green);}
@@ -210,7 +211,7 @@
                 <span class="iv">
                   <?php if(($access['access_supplier'] ?? 'N') == 'Y'){ ?>
                     <?php foreach (explode(',', $row->product_supplier_tag) as $tag): ?>
-                      <?php if (trim($tag) !== ''): ?><span class="exp-badge"><?php echo htmlspecialchars(trim($tag)); ?></span><?php endif; ?>
+                      <?php if (trim($tag) !== ''): ?><?php $is_last = !empty($data['last_supplier']) && strcasecmp(trim($tag), trim($data['last_supplier'])) === 0; ?><span class="exp-badge<?php echo $is_last ? ' last-supplier' : ''; ?>"<?php echo $is_last ? ' title="Supplier pembelian terakhir"' : ''; ?>><?php echo $is_last ? '<i class="fas fa-star"></i> ' : ''; ?><?php echo htmlspecialchars(trim($tag)); ?></span><?php endif; ?>
                     <?php endforeach; ?>
                   <?php }else{ ?>
                     -

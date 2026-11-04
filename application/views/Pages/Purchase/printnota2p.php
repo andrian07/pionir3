@@ -111,15 +111,15 @@
 						<table class="address">
 
 							<tr>
-								<td colspan="2"><b style="font-size:22px; text-decoration: underline;">TOKO PIONIR SUDIRMAN</b></td>
+								<td colspan="2"><b style="font-size:30px; text-decoration: underline;">TOKO PIONIR SUDIRMAN</b></td>
 							</tr>
 
 							<tr>
-								<td colspan="2">JL NUSA INDAH 2 BLOCK D5 NO.10-11</td>
+								<td colspan="2" style="font-size:14px;">JL NUSA INDAH 2 BLOCK D5 NO.10-11</td>
 							</tr>
 
 							<tr>
-								<td colspan="2">(0561) 731219</td>
+								<td colspan="2" style="font-size:14px;">(0561) 731219</td>
 							</tr>
 
 							<tr>

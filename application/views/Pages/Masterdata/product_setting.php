@@ -44,6 +44,7 @@ require DOC_ROOT_PATH . $this->config->item('header');
   .pd-info-row .iv{color:var(--pd-dark);font-weight:700;text-align:right;}
 
   .pd-exp-badge{display:inline-block;background:var(--pd-blue);color:#fff;border-radius:20px;padding:.18rem .6rem;font-size:.72rem;font-weight:700;margin:0 0 .25rem .25rem;}
+  .pd-exp-badge.last-supplier{background:#f59e0b;color:#fff;box-shadow:0 0 0 2px rgba(245,158,11,.3);}
   .pd-status-pill{display:inline-flex;align-items:center;font-weight:700;font-size:.85rem;}
   .pd-status-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:.4rem;}
   .pd-status-active{color:var(--pd-green);} .pd-status-active .pd-status-dot{background:var(--pd-green);}
@@ -310,7 +311,7 @@ require DOC_ROOT_PATH . $this->config->item('header');
                           <span class="ik">Supplier</span>
                           <span class="iv">
                             <?php foreach (explode(',', $row->product_supplier_tag) as $tag): ?>
-                              <?php if (trim($tag) !== ''): ?><span class="pd-exp-badge"><?php echo htmlspecialchars(trim($tag)); ?></span><?php endif; ?>
+                              <?php if (trim($tag) !== ''): ?><?php $is_last = !empty($data['last_supplier']) && strcasecmp(trim($tag), trim($data['last_supplier'])) === 0; ?><span class="pd-exp-badge<?php echo $is_last ? ' last-supplier' : ''; ?>"<?php echo $is_last ? ' title="Supplier pembelian terakhir"' : ''; ?>><?php echo $is_last ? '<i class="fas fa-star"></i> ' : ''; ?><?php echo htmlspecialchars(trim($tag)); ?></span><?php endif; ?>
                             <?php endforeach; ?>
                           </span>
                         </div>

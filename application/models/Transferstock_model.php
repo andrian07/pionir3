@@ -256,7 +256,7 @@ class transferstock_model extends CI_Model {
 
     public function header_transfer_stock($hd_transfer_id)
     {   
-        $query = $this->db->query("select * from hd_transfer_stock a, ms_user b where a.user_id = b.user_id and hd_transfer_stock_id   = '".$hd_transfer_id."'");
+        $query = $this->db->query("select *, (select w.warehouse_name from dt_transfer_stock dts join ms_warehouse w on dts.dt_transfer_stock_warehouse_from = w.warehouse_id where dts.hd_transfer_stock_id = a.hd_transfer_stock_id limit 1) as warehouse_name from hd_transfer_stock a, ms_user b where a.user_id = b.user_id and hd_transfer_stock_id   = '".$hd_transfer_id."'");
         $result = $query->result();
         return $result;
     }

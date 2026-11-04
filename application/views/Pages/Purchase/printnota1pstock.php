@@ -112,7 +112,7 @@
       <tr  >
         <td colspan="3" class="text-left" style="font-size:11px; padding-left: 2%;">
           <?php foreach($item['stocks'] as $stock){ ?>
-            <?php echo $stock['warehouse_name']; ?>: <?php echo $stock['stock']; ?><br />
+            &bull; <?php echo $stock['warehouse_name']; ?>: <?php echo $stock['stock']; ?><br />
           <?php } ?>
         </td>
       </tr>

@@ -73,7 +73,9 @@
 
     <h2 style="margin-top: 80px;"> <?php echo $data['header_sales_dropship'][0]->hd_dropship_sales_dropship_address; ?>
 
-    <h2 style="margin-top: 50px;">Via Datang Ambil</h2>
+    <h2><?php echo $data['header_sales_dropship'][0]->hd_dropship_sales_dropship_phone; ?></h2>
+
+    <h2 style="margin-top: 50px;">Via <?php echo $data['header_sales_dropship'][0]->ekspedisi_name; ?></h2>
     <h2>Jumlah Colly: <?php echo $data['header_sales_dropship'][0]->hd_dropship_sales_colly; ?> X</h2>
     </div>
 </div>

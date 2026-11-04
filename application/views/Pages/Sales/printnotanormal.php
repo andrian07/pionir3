@@ -112,15 +112,15 @@
 						<table class="address">
 
 							<tr>
-								<td colspan="2"><b style="font-size:22px; text-decoration: underline;"><?php echo $data['header_sales'][0]->warehouse_name; ?></b></td>
+								<td colspan="2"><b style="font-size:30px; text-decoration: underline;"><?php echo $data['header_sales'][0]->warehouse_name; ?></b></td>
 							</tr>
 
 							<tr>
-								<td><?php echo $data['header_sales'][0]->warehouse_address; ?></td>
+								<td style="font-size:14px;"><?php echo $data['header_sales'][0]->warehouse_address; ?></td>
 							</tr>
 
 							<tr>
-								<td colspan="2"><?php echo $data['header_sales'][0]->warehouse_phone; ?></td>
+								<td colspan="2" style="font-size:14px;"><?php echo $data['header_sales'][0]->warehouse_phone; ?></td>
 							</tr>
 
 							<tr>
