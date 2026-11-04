@@ -702,6 +702,37 @@ class masterdata_model extends CI_Model {
         return $result;
     }
 
+    // supplier pembelian terakhir (non-Cancel) per produk, hasil: [product_id => supplier_name]
+    public function last_purchase_supplier_map($product_ids)
+    {
+        $product_ids = array_values(array_unique(array_filter(array_map('intval', (array)$product_ids))));
+        if(empty($product_ids)){
+            return array();
+        }
+        $this->db->select('dt_purchase.dt_product_id, ms_supplier.supplier_name');
+        $this->db->from('dt_purchase');
+        $this->db->join('hd_purchase', 'dt_purchase.hd_purchase_id = hd_purchase.hd_purchase_id');
+        $this->db->join('ms_supplier', 'hd_purchase.hd_purchase_supplier = ms_supplier.supplier_id');
+        $this->db->where_in('dt_purchase.dt_product_id', $product_ids);
+        $this->db->where('hd_purchase.hd_purchase_status !=', 'Cancel');
+        $this->db->order_by('hd_purchase.hd_purchase_date', 'desc');
+        $this->db->order_by('hd_purchase.hd_purchase_id', 'desc');
+        $rows = $this->db->get()->result();
+        $map = array();
+        foreach($rows as $r){
+            if(!isset($map[$r->dt_product_id])){
+                $map[$r->dt_product_id] = $r->supplier_name;
+            }
+        }
+        return $map;
+    }
+
+    public function last_purchase_supplier($product_id)
+    {
+        $map = $this->last_purchase_supplier_map(array($product_id));
+        return isset($map[(int)$product_id]) ? $map[(int)$product_id] : null;
+    }
+
     public function settingproduct($id)
     {
         $query = $this->db->query("select * from ms_product a, ms_brand b, ms_unit c, ms_category d where a.product_brand = b.brand_id and a.product_unit = c.unit_id and a.product_category = d.category_id and a.product_id  = '".$id."' and a.is_active = 'Y'");

@@ -99,11 +99,12 @@ class Search extends CI_Controller {
 	public function detailsearch(){
 		$id = $this->input->get('id');
 		$get_product_by_id['get_product_by_id'] = $this->masterdata_model->settingproduct($id);
+		$last_supplier['last_supplier'] = $this->masterdata_model->last_purchase_supplier($id);
 		$product_stock['product_stock'] = $this->masterdata_model->product_stock($id);
 		$pending_po['pending_po'] = $this->masterdata_model->pending_po_by_product($id);
 		$user_id = $_SESSION['user_id'];
 		$check_role_product['check_role_product'] = $this->global_model->check_role_product($user_id)->result_array();
-		$data['data'] = array_merge($get_product_by_id, $product_stock, $pending_po, $check_role_product);
+		$data['data'] = array_merge($get_product_by_id, $last_supplier, $product_stock, $pending_po, $check_role_product);
 		if($get_product_by_id['get_product_by_id'] == null){
 			print_r("Barang Tidak Ada Di Gudang");die();
 		}else{

@@ -1231,6 +1231,7 @@ class Masterdata extends CI_Controller {
 			$total_row = $count_list[0]['total_row'];
 			$data = array();
 			$no = $_POST['start'];
+			$last_supplier_map = $this->masterdata_model->last_purchase_supplier_map(array_column($list, 'product_id'));
 			foreach ($list as $field) {
 
 				if($field['is_ppn'] == 'PPN'){
@@ -1275,7 +1276,18 @@ class Masterdata extends CI_Controller {
 				}
 				
 				if($check_role_product[0]['access_supplier'] == 'Y'){
-					$product_tag = $field['product_supplier_tag'];
+					$last_supplier = isset($last_supplier_map[$field['product_id']]) ? strtoupper(trim($last_supplier_map[$field['product_id']])) : '';
+					$tags = array();
+					foreach(explode(',', $field['product_supplier_tag']) as $tag){
+						$tag = trim($tag);
+						if($tag === ''){ continue; }
+						if($last_supplier !== '' && strtoupper($tag) === $last_supplier){
+							$tags[] = '<span class="badge badge-warning" title="Supplier pembelian terakhir"><i class="fas fa-star"></i> '.htmlspecialchars($tag).'</span>';
+						}else{
+							$tags[] = htmlspecialchars($tag);
+						}
+					}
+					$product_tag = implode(', ', $tags);
 				}else{
 					$product_tag = '-';
 				}
@@ -1631,10 +1643,11 @@ class Masterdata extends CI_Controller {
 		if($check_auth['check_access'][0]->edit == 'Y'){
 			$id = $this->input->get('id');
 			$settingproduct['settingproduct'] = $this->masterdata_model->settingproduct($id);
+			$last_supplier['last_supplier'] = $this->masterdata_model->last_purchase_supplier($id);
 			$product_stock['product_stock'] = $this->masterdata_model->product_stock($id);
 			$pending_po['pending_po'] = $this->masterdata_model->pending_po_by_product($id);
 			$check_auth['check_auth'] = $check_auth;
-			$data['data'] = array_merge($settingproduct, $product_stock, $pending_po, $check_auth);
+			$data['data'] = array_merge($settingproduct, $last_supplier, $product_stock, $pending_po, $check_auth);
 			$this->load->view('Pages/Masterdata/product_setting', $data);
 		}else{
 			$msg = "No Access";
