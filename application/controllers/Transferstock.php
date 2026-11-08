@@ -115,11 +115,11 @@ class Transferstock extends CI_Controller {
 				$row[] 	= date_format($date,"d-M-Y");
 				$row[] 	= $field['unit_name'];
 				$row[] 	= $field['dt_transfer_stock_qty'];
-				$row[] 	= $field['from'];
-				$row[] 	= $field['to'];
-				$row[] 	= $field['dt_transfer_stock_from_qty'];
-				$row[] 	= $field['dt_transfer_stock_to_qty'];
-				$row[] 	= $field['dt_transfer_stock_note'];
+				$row[] 	= '<span style="color:red;">'.$field['from'].'</span>';
+				$row[] 	= '<span style="color:green;">'.$field['to'].'</span>';
+				$row[] 	= '<span style="color:red;">'.$field['dt_transfer_stock_from_qty'].'</span>';
+				$row[] 	= '<span style="color:green;">'.$field['dt_transfer_stock_to_qty'].'</span>';
+				$row[] 	= (!empty($field['dt_transfer_stock_note']) && $field['dt_transfer_stock_note'] != '0') ? $field['dt_transfer_stock_note'] : '';
 				$row[] 	= $detail.$delete.$dispatch;
 				$data[] = $row;
 			}

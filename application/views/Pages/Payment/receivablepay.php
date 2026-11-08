@@ -113,8 +113,8 @@ require DOC_ROOT_PATH . $this->config->item('header');
 
                 <div class="col-sm-2">
                   <div class="form-group">
-                    <label>Pembayaran</label>
-                    <input id="receivable_payment" name="receivable_payment" type="text" class="form-control text-right" value="0">
+                    <label style="color:green !important;">Pembayaran</label>
+                    <input id="receivable_payment" name="receivable_payment" type="text" class="form-control text-right" value="0" style="border-color:green; color:green;">
                   </div>
                 </div>
 
@@ -159,7 +159,7 @@ require DOC_ROOT_PATH . $this->config->item('header');
                     <th>Saldo Hutang</th>
                     <th>Pembulatan/Disc</th>
                     <th>Total Retur</th>
-                    <th>Pembayaran</th>
+                    <th style="color:green;">Pembayaran</th>
                     <th>Sisa Hutang</th>
                     <th>Aksi</th>
                   </tr>
@@ -180,7 +180,7 @@ require DOC_ROOT_PATH . $this->config->item('header');
 
               <div class="col-lg-6 text-right">
                 <div class="form-group row">
-                  <label for="footer_total_invoice" class="col-sm-7 col-form-label text-right:">Total Pembayaran:</label>
+                  <label for="footer_total_invoice" class="col-sm-7 col-form-label text-right:" style="color:green !important;">Total Pembayaran:</label>
                   <div class="col-sm-5">
                     <input id="footer_total_pay" name="footer_total_pay" type="text" class="form-control text-right" value="0" readonly="">
                   </div>

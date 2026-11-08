@@ -93,10 +93,10 @@ require DOC_ROOT_PATH . $this->config->item('header');
                     <th>Tanggal</th>
                     <th>Satuan</th>
                     <th>Qty</th>
-                    <th>Dari</th>
-                    <th>Ke</th>
-                    <th>Stok Akhir Dari</th>
-                    <th>Stok Akhir Ke</th>
+                    <th style="color:red !important;">Dari</th>
+                    <th style="color:green !important;">Ke</th>
+                    <th style="color:red !important;">Stok Akhir Dari</th>
+                    <th style="color:green !important;">Stok Akhir Ke</th>
                     <th>Catatan</th>
                     <th>Aksi</th>
                   </tr>
